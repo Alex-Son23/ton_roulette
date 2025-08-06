@@ -10,6 +10,7 @@ class Log(MyBaseModel):
     address = Column(String)
     winning_name = Column(String)
     id_trans = Column(String)
+    amount = Column(String)
     date_register = Column(DateTime)
 
     def __repr__(self):

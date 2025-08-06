@@ -116,3 +116,7 @@ SIMPLEUI_CONFIG = {
 }
 
 SIMPLEUI_DEFAULT_ICON = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://optionally-ideal-gnu.cloudpub.ru",
+]

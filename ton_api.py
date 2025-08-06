@@ -22,15 +22,12 @@ async def api_ton(bot: Bot):
             id_trans = tr['hash']
             amountTON = int(tr['counterpartAmount']['value']) / (10 ** 9)
             address = tr['whoFriendly']
-            if amountTON not in (1, 2, 5):
-                continue
-
             if await database.check_transaction_exists(id_trans):
                 continue
 
-            prize_name, percent = await run_roulette()
+            prize_name, percent, gifts_link, amount = await run_roulette(amountTON)
 
-            await database.add_log(address=address, winning_name=prize_name, id_trans=id_trans)
+            await database.add_log(address=address, winning_name=prize_name, id_trans=id_trans, amount=amount)
 
             msg_1 = (
                 f"🎉 <b>Розыгрыш запущен!</b>\n"
@@ -41,7 +38,7 @@ async def api_ton(bot: Bot):
 
             msg_2 = (
                 f"💥 <b>Победа!</b>\n"
-                f"Кошелёк <code>{address}</code> получил приз: <b>{prize_name}</b> (шанс: {percent}%)"
+                f"Кошелёк <code>{address}</code> получил приз: <b>{prize_name}</b> (Шанс: {percent}%)." + (f' — <a href="{gifts_link}">Все подарки</a>' if gifts_link else "")
             )
             await bot.send_message(chat_id, msg_2)
 
@@ -70,7 +67,7 @@ async def api_ton(bot: Bot):
 #                 buy_trans.append(tr)
 #         for tr in buy_trans:
 #             id_trans = tr['hash']
-#             prize_name, percent = await run_roulette()
+#             prize_name, percent, gifts_link = await run_roulette(amountTON)
 #             log = await database.get_log()
 #             for i in log:
 #                 if id_trans == i.id_trans:
@@ -89,7 +86,7 @@ async def api_ton(bot: Bot):
 #                 await asyncio.sleep(5)
 #                 msg_2 = (
 #                     f"💥 <b>Победа!</b>\n"
-#                     f"Кошелёк <code>{address}</code> получил приз: <b>{prize_name}</b> (шанс: {percent}%)"
+#                     f"Кошелёк <code>{address}</code> получил приз: <b>{prize_name}</b> (бонус: {percent}%)." + (f' — <a href="{gifts_link}">Все подарки</a>' if gifts_link else "")
 #                 )
 #                 await bot.send_message(chat_id, msg_2)
 #     except Exception as e:

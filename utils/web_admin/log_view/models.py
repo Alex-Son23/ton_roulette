@@ -11,6 +11,7 @@ class Log(models.Model):
     address = models.TextField('номер кошелька')
     winning_name = models.TextField('Название выигрыша')
     id_trans = models.TextField('id трансакция',null=True,blank=True)
+    amount = models.TextField('Диапазон', default="0-0")
     date_register = models.DateTimeField('Дата')
 
     def __str__(self):

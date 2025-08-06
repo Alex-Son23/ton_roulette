@@ -1,16 +1,37 @@
 from django.db import models
-
+from django.core.exceptions import ValidationError
 
 class Draw(models.Model):
+    winning_name   = models.CharField(max_length=255)
+    win_percentage = models.FloatField(default=0)   # шанс выпадения, %
+    dis_percentage = models.FloatField(default=0)   # скидка/бонус (что показываем как "бонус: X%")
+
+    # НОВОЕ: диапазоны TON
+    min_amount = models.FloatField(default=0.0)
+    max_amount = models.FloatField(default=999999.0)
+
+    # НОВОЕ: ссылка на пост “Все подарки”
+    gifts_link = models.URLField(blank=True, null=True)
+
     class Meta:
-        db_table = "draw"
-        verbose_name = "Розыгрыш"
-        verbose_name_plural = "Розыгрыш"
+        db_table = "draw"   # ВАЖНО: то же имя, что у SQLAlchemy-модели
+        verbose_name = "Приз"
+        verbose_name_plural = "Призы"
 
-    id = models.AutoField('ID', primary_key=True)
-    winning_name = models.TextField('Название выигрыша')
-    win_percentage = models.FloatField('Поцент выигрыша')
-    dis_percentage = models.FloatField('Отображаемый процент')
+    def clean(self):
+        # Базовая валидация диапазона
+        if self.min_amount < 0 or self.max_amount <= self.min_amount:
+            raise ValidationError("Проверьте корректность диапазона: min_amount < max_amount и min_amount ≥ 0.")
 
+        # (Опционально) Проверка пересечений диапазонов с другими записями
+        qs = Draw.objects.exclude(pk=self.pk)
+        overlapping = qs.filter(
+            min_amount__lte=self.max_amount,
+            max_amount__gte=self.min_amount,
+        ).exists()
+        # Если НЕ хотите запрещать пересечения — закомментируйте блок ниже
+        # if overlapping:
+        #     raise ValidationError("Диапазон пересекается с уже существующим. Уточните границы.")
+    
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.winning_name} [{self.min_amount}–{self.max_amount}]"
