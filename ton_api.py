@@ -49,7 +49,7 @@ async def api_ton(bot: Bot, ai_client: AsyncOpenAI):
                     f"⚙️ Алгоритм не ожидал такого исхода, но блокчейн всё принял.\n"
                     f"🚀 Это дроп вне логики. Кто следующий?"
                 )
-            await bot.send_message(chat_id, msg)
+            await bot.send_message(chat_id, msg, disable_web_page_preview=True)
             # await asyncio.sleep(3)
 
     except Exception as e:
