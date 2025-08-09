@@ -49,6 +49,7 @@ async def api_ton(bot: Bot, ai_client: AsyncOpenAI):
                     f"🚀 Это дроп вне логики. Кто следующий?"
                 )
             await bot.send_message(chat_id, msg)
+            asyncio.sleep(3)
 
     except Exception as e:
         print(f"Ошибка в api_ton: {e}")
