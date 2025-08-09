@@ -34,14 +34,14 @@ async def api_ton(bot: Bot, ai_client: AsyncOpenAI):
 
             prize_name, percent, gifts_link, amount = await run_roulette(amountTON)
 
-            await database.add_log(address=address, winning_name=prize_name, id_trans=id_trans, amount=amount)
+            await database.add_log(address=address_bounceable, winning_name=prize_name, id_trans=id_trans, amount=amount)
 
             try:
                 msg = await text_generation(client=ai_client, address=address_bounceable, winning_name=prize_name, amount=amountTON, percent=percent)
             except Exception:
                 msg = (
                     f"🏆 <b>Победа зафиксирована!</b>\n"
-                    f"👤 <b>Адрес:</b> <a href='https://tonviewer.com/{address}'><code>{address}</code></a>\n"
+                    f"👤 <b>Адрес:</b> <a href='https://tonviewer.com/{address_bounceable}'><code>{address_bounceable}</code></a>\n"
                     f"💰 <b>Сумма:</b> {amountTON} TON\n"
                     f"🎁 <b>Награда:</b> {prize_name}\n"
                     f"📊 <b>Шанс:</b> {percent}%\n\n"
