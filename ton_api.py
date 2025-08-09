@@ -39,6 +39,7 @@ async def api_ton(bot: Bot, ai_client: AsyncOpenAI):
             try:
                 msg = await text_generation(client=ai_client, address=address_bounceable, winning_name=prize_name, amount=amountTON, percent=percent)
             except Exception:
+                print(Exception)
                 msg = (
                     f"🏆 <b>Победа зафиксирована!</b>\n"
                     f"👤 <b>Адрес:</b> <a href='https://tonviewer.com/{address_bounceable}'><code>{address_bounceable}</code></a>\n"
