@@ -27,7 +27,7 @@ PROMPT_TEXT = """
 
 
 
-async def text_generation(client: AsyncOpenAI, address: str, winning_name: str, amount: str, percent) -> str:
+async def text_generation(client: AsyncOpenAI, address: str, winning_name: str, amount, percent) -> str:
     print(address, winning_name, amount, percent)        
     PROMPT_TEXT = await GlobalPrompt.aget_prompt()
     completion = await client.chat.completions.create(
