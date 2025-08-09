@@ -35,7 +35,7 @@ async def api_ton(bot: Bot, ai_client: AsyncOpenAI):
             prize_name, percent, gifts_link, amount = await run_roulette(amountTON)
 
             await database.add_log(address=address_bounceable, winning_name=prize_name, id_trans=id_trans, amount=amount)
-
+            print(address_bounceable, prize_name, amountTON, percent)
             try:
                 msg = await text_generation(client=ai_client, address=address_bounceable, winning_name=prize_name, amount=amountTON, percent=percent)
             except Exception as e:
