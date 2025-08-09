@@ -24,3 +24,6 @@ USE_REDIS = env.bool('USE_REDIS')
 TELEGRAM_CHAT_ID = env.str("TELEGRAM_CHAT_ID")
 TON_RECEIVE_WALLET = env.str("TON_RECEIVE_WALLET")
 TIME_ZONE = pytz.timezone(env.str("TIME_ZONE"))
+
+# OpenAI
+OPENAI_TOKEN = env.str("OPENAI_TOKEN")

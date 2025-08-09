@@ -111,6 +111,11 @@ SIMPLEUI_CONFIG = {
             'name': 'Логирование',
             'icon': 'fa-solid fa-info',
             'url': 'log_view/log'
+        },
+        {
+            'name': 'Промпт',
+            'icon': 'fa-solid fa-comment',
+            'url': 'draw_view/globalprompt'
         }
     ]
 }

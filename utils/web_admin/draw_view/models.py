@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from asgiref.sync import sync_to_async
+
 
 class Draw(models.Model):
     winning_name   = models.CharField(max_length=255)
@@ -35,3 +37,25 @@ class Draw(models.Model):
     
     def __str__(self):
         return f"{self.winning_name} [{self.min_amount}–{self.max_amount}]"
+
+
+class GlobalPrompt(models.Model):
+    prompt_text = models.TextField("Текст промпта")
+
+    def save(self, *args, **kwargs):
+        # Гарантия единственного экземпляра
+        if not self.pk and GlobalPrompt.objects.exists():
+            raise ValueError("Может существовать только один глобальный промпт")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.prompt_text[:50] + "..." if len(self.prompt_text) > 50 else self.prompt_text
+    
+    @classmethod
+    async def aget_prompt(cls):
+        # Возвращает единственный промпт (если он есть)
+        return await sync_to_async(cls.objects.first)()
+
+    class Meta:
+        verbose_name = "Глобальный промпт"
+        verbose_name_plural = "Глобальный промпт"
