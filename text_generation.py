@@ -34,8 +34,9 @@ async def text_generation(client: AsyncOpenAI, address: str, winning_name: str, 
     PROMPT_TEXT = PROMPT_TEXT.replace("{reward}", winning_name)
     PROMPT_TEXT = PROMPT_TEXT.replace("{purchase_amount}", str(amount))
     PROMPT_TEXT = PROMPT_TEXT.replace("{rarity_percent}", str(percent))
+    print(PROMPT_TEXT)
     completion = await client.chat.completions.create(
-        messages=[{"role": "user", "content": PROMPT_TEXT.format(wallet_address=address, purchase_amount=amount, reward=winning_name, rarity_percent=percent)}],
+        messages=[{"role": "user", "content": PROMPT_TEXT}],
         model="gpt-5-nano"
     )
     return completion.choices[0].message.content
